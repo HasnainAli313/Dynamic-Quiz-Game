@@ -74,9 +74,9 @@ function Quiz() {
 
     if (quizCompleted) {
         return (
-            <section className="text-center p-5">
-                <h1 className="lg:text-4xl text-3xl font-semibold">Quiz Completed</h1>
-                <p className="text-xl m-4">Your score is <span className="font-bold">{score}</span>  out of <span className="font-bold">{questions.length}</span> </p>
+            <section className="text-center h-[100vh] dark:bg-gray-800 p-5">
+                <h1 className="lg:text-4xl text-3xl font-semibold dark:text-white">Quiz Completed</h1>
+                <p className="text-xl  dark:text-white m-4">Your score is <span className="font-bold">{score}</span>  out of <span className="font-bold">{questions.length}</span> </p>
             </section>
         );
     }
