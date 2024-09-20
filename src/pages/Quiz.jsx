@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Quiz() {
     const [newQuestion, setNewQuestion] = useState(0);
@@ -7,6 +7,19 @@ function Quiz() {
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [score, setScore] = useState(0);
     const [showFeedback, setShowFeedback] = useState(false);
+    const [theme, setTheme] = useState('light')
+
+    const toggleTheme = ()=>{
+        setTheme(theme === 'light' ? 'dark' : 'light')
+    }
+    useEffect(()=>{
+        if(theme === 'dark'){
+            document.documentElement.classList.add('dark')
+        }
+        else{
+            document.documentElement.classList.remove('dark')
+        }
+    },[theme])
 
     const questions = [
         {
@@ -61,39 +74,42 @@ function Quiz() {
 
     if (quizCompleted) {
         return (
-            <section>
-                <h1>Quiz Completed</h1>
-                <p>Your score is {score} out of {questions.length}</p>
+            <section className="text-center p-5">
+                <h1 className="lg:text-4xl text-3xl font-semibold">Quiz Completed</h1>
+                <p className="text-xl m-4">Your score is <span className="font-bold">{score}</span>  out of <span className="font-bold">{questions.length}</span> </p>
             </section>
         );
     }
 
     return (
-        <section>
-            <h1>Dynamic Quiz Game</h1>
-            <div>
-                <ul>
-                    <h2>{questions[newQuestion].question} ({newQuestion + 1}/{questions.length})</h2>
+        <>
+        <section className="text-center dark:bg-gray-800 h-[100vh]">
+        <button  onClick={toggleTheme} className="border lg:absolute lg:right-2  dark:bg-white dark:text-black border-gray-800 p-1 mt-2 rounded-lg bg-gray-600 text-white ">Toggle Theme</button>
+            <h1 className="lg:text-4xl text-3xl  dark:text-white p-2 font-semibold">Dynamic Quiz Game</h1>
+            <div className="border dark:text-white dark:bg-gray-600 bg-[#F8F8FF] rounded-lg border-black m-auto lg:mt-5 p-2  w-[90%] lg:w-[50%]">
+                    <h2 className="lg:text-2xl text-xl font-semibold">{questions[newQuestion].question} <span className="text-blue-500">({newQuestion + 1}/{questions.length})</span></h2>
+                <ul className="text-left pl-10">
                     {questions[newQuestion].answers.map((answer, index) => (
-                        <li key={index}>
-                            <input
+                        <li  key={index}>
+                            <input 
                                 type="radio"
                                 name="option"
-                                className="border border-black m-2"
+                                className="m-3 "
                                 onChange={() => handleAnswerSelection(answer)}
                                 checked={selectedAnswer === answer}
-                            /> {answer}
+                            /> {answer} 
                         </li>
                     ))}
                 </ul>
                 {selectedAnswer && (
-                    <div>
-                        {showFeedback && <p>{isCorrect ? "Correct!" : "Incorrect!"}</p>}
-                        <button className="border bg-slate-500 border-black p-2" onClick={nextQuestion}>Next</button>
+                    <div >
+                        {showFeedback && <p>{isCorrect ? <span className="text-green-600">Correct!</span>: <span className="text-red-600">Incorrect!</span>}</p>}
+                        <button className=" bg-slate-200 dark:bg-white dark:text-black dark:hover:bg-slate-400 hover:bg-slate-300 rounded-lg  p-2 m-5" onClick={nextQuestion}>Next</button>
                     </div>
                 )}
             </div>
         </section>
+        </>
     );
 }
 
